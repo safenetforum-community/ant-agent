@@ -22,6 +22,17 @@ Good question :) As the agents are distributed, it is very hard with TimeZones t
 
 Outside that window, the Agent actively encourages running tasks to terminate, before forceably killing any straglers by 00 minutes.
 
+## What can the Agent do ?
+
+The agent runs a **Performance** worker, which collates run-time figures (how long a task took, did it suceed, was the file ok, what errors were seen) and then pushes the information to disk once a minute via a cache (to save on disk I/O) in
+an InfluxDB line protocol specification.
+
+Currently the agent has (3) modes of operation:
+
+* Download - In this mode, the agent will download files from the network, either **once**, or multiple times in Hourly test window, multipled by the number of workers.  It can also check an MD5 hash of the file to ensure no corruption.
+* Quote - In this mode, the agent retrieves specification of random seeds (which would allow the file to be regenerated for testing) it can use to generate files, from which it will request **quotes** from the network.
+* Upload - In this mode, the agent will retrieve file specifications based on random seeds again, it will the upload to the network.
+
 ## Building from source
 
 The agent is written in pyton and requires a minimum version of **3.10**
