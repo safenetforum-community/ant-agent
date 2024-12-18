@@ -44,9 +44,9 @@ The AGENT does **NOT** need root access, or sudo, please only execute as a norma
 
 system requirements:
 
-min 10GB free hdd
-1 core
-512MB memory free
+* min 10GB free hdd
+* 1 core
+* 512MB memory free
 
 The agent can be launched from the ant_agent directory with.
 
