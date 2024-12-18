@@ -1,5 +1,27 @@
 Current Status : The code is **pre-alpha** and full of place-holders and boiler plate code, however it should compile and execute in a fashion.
 
+## Distributed Agent Tests
+
+The agent looks at this Github Repo for task scripts, they are found under **agent-tests**, the main control file that tells the agent what to do is '00-control.xml'
+
+So why a centralised control script ?
+
+The issue with testing agents, is they can be **too agressive** in their actions, and this "could" be detrimental to the network, and the aim of this is not to be a Distributed DDOS network.
+
+Why can't the Agent run 1000's of test on my machine I have 132 Cores, and 1TB of memory ?
+
+As above, the Agent has in-built rate limiters, set at an optimal level - they will ensure that if a "centralised" test asks the agent to run 5000 parallel downloads, it will ignore it, and default to a much lower "safe" level.
+
+I think the agent tests are causing issues on the network ?
+
+That's not a probelm, **ANYONE** can stop all the agents, by creating a Github issue in this repo, and using the tag "kill-switch", with some details around what they were seeing and why.  As soon as that issue is created, Agents will notice, and start killing worker threads until they are running no tests (This isn't instant, and can take upto 60 minutes).
+
+Why are tests only scheduler and executed in a 50 minute hourly window ?
+
+Good question :) As the agents are distributed, it is very hard with TimeZones to be confident that tests are all running when they are meant to.  The solution to that is, the Agent only runs tests from 5 minutes past the hour, till around 55 minutes to the hour, in Hourly cycles.
+
+Outside that window, the Agent actively encourages running tasks to terminate, before forceably killing any straglers by 00 minutes.
+
 ## Building from source
 
 The agent is written in pyton and requires a minimum version of **3.10**
