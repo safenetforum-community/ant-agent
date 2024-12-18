@@ -1,3 +1,7 @@
+## 00-control.xml
+
+Agent task control file (tells the distributed agents what they should be doing)
+
 ## 01-download-files.csv
 
 A control file, that is used by the agent, in providing files to download.
