@@ -17,10 +17,11 @@ i.e
 
 **with md5**
 
-large,my-large-distribution.iso,0430s93943599s7d9ds97g79gd9g7d6gd5g5d66g7d7g77dg8d8g8d8g8d8g8d,79054025255fb1a16e4bc499aef54eb4
+large,my-file.iso,0430s93943599s7d9ds97g79gd9g7d6gd5g5d66g7d7g77dg8d8g8d8g8d8g8d,79054025255fb1a16e4bc499aef54eb4
 
 **without md5**
-large,my-large-distribution.iso,0430s93943599s7d9ds97g79gd9g7d6gd5g5d66g7d7g77dg8d8g8d8g8d8g8d,0
+
+large,my-file.iso,0430s93943599s7d9ds97g79gd9g7d6gd5g5d66g7d7g77dg8d8g8d8g8d8g8d,0
 
 ### file sizes
 
