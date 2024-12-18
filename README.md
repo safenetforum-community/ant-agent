@@ -1,6 +1,6 @@
 Current Status : The code is **pre-alpha** and full of place-holders and boiler plate code, however it should compile and execute in a fashion.
 
-The TO-DO.md will be kept upto date(tm) with areas that need attention.
+The TODO.md will be kept upto date(tm) with areas that need attention.
 
 ## Distributed Agent Tests
 
