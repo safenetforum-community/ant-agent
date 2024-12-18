@@ -72,3 +72,13 @@ you should get the startup logs (currently in DEBUG)
 16-12-2024 07:22:25 - INFO - Press [q] = terminate agent | [f] = fetch updated tasks | [s] = show current status -> all keypress have a (10 second delay)
 
 ```
+
+## Metrics
+
+The agent is designed to generate InfluxDB line protocol files, and these will be stored in the **/cache/metrics/** directory under the agent.
+
+There are currently two files;
+
+``metrics.csv``  This is a per worker thread detailed performance stats  
+
+``summary.csv``  This is a 1 minute rollup summary
