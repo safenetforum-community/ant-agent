@@ -1,0 +1,13 @@
+# DOWNLOAD-FILES.CSV
+# refer to blueprint on suitable options for filesize, and what they relate to
+# filesize : tiny, small, medium, large, huge, giga, tera, chunka, chunkb
+# name : network file name that file will be created into, no paths, just filename
+# address : this is the network address the file can be downloaded from - the file must be uploaded as PUBLIC
+# md5 : Optional - this is the MD5 hash of the file - this is used to validate the recevied file independantly
+fileSize,name,address,md5
+small,example1.txt,084537923247445948457989347533453,12345678 
+small,example2.txt,03299388829837472882832AZ423BO211,23456789 
+tiny,example3.txt,0JKWL38G7GH39FJD9J22KD03JJF9DNE33,34567890 
+tiny,example4.txt,048CJJNCINNNZZA52624HRHEIFHFEERE,45678901 
+huge,example5.txt,08543NN4I8FNNIFNFIDIHIIWI8D8FIIIIFHIFIFIDFD,56789012 
+huge,example6.txt,1J8I3HHV8VHKSKDJFEH9WWDODDF9GJE,67890123
