@@ -2,7 +2,7 @@ Current Status : The code is **pre-alpha** and full of place-holders and boiler 
 
 ## Distributed Agent Tests
 
-The agent looks at this Github Repo for task scripts, they are found under **agent-tests**, the main control file that tells the agent what to do is '00-control.xml'
+The agent looks at this Github Repo for task scripts, they are found under **test-files**, the main control file that tells the agent what to do is '00-control.xml'
 
 So why a centralised control script ?
 
