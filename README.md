@@ -33,6 +33,10 @@ Currently the agent has (3) modes of operation:
 * Quote - In this mode, the agent retrieves specification of random seeds (which would allow the file to be regenerated for testing) it can use to generate files, from which it will request **quotes** from the network.
 * Upload - In this mode, the agent will retrieve file specifications based on random seeds again, it will the upload to the network.
 
+### What if I want more tests ?
+
+The agent is coded to use threads, which allow it to do multiple **tests** at the same time - it is possible the agent could be tasked with parallel jobs to be downloading files of various sizes, while getting quotes, and uploading at the same time - this is why the **Rate-Limiter* is in the code, to ensure an Agent isn't bombareded with too much (machine spec also plays a role in the ability of the Agent)
+
 ## Building from source
 
 The agent is written in pyton and requires a minimum version of **3.10**
