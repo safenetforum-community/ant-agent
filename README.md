@@ -82,3 +82,11 @@ There are currently two files;
 ``metrics.csv``  This is a per worker thread detailed performance stats  
 
 ``summary.csv``  This is a 1 minute rollup summary
+
+### InfluxDB local
+
+There is a **docker-compose.yml** under InfluxDB, that will start a local influx database, you will need to create ENV files with the docker file, to specify username, password, and token to login.
+
+You can then access the influxDB interface on ``http://localhost:8086``
+
+You can then import the Metrics manually into InfluxDB and visulise the data
