@@ -4,7 +4,19 @@
 # name : network file name that file will be created into, no paths, just filename
 # address : this is the network address the file can be downloaded from - the file must be uploaded as PUBLIC
 # md5 : Optional - this is the MD5 hash of the file - this is used to validate the recevied file independantly
+#
+#    tiny = files with a size below 128k
+#    small = files with a size of 129k > 4Mb
+#    medium = files with a size of 4Mb > 32MB
+#    large = files with a size of 32MB > 60MB
+#    huge = files with a size of 128MB > 1G
+#    giga = files with a size of 1G > 20G
+#    tera = files with a size of 20G > 100G
+# --------------------------------------------------------------------------------------------------------------------------------------------
 fileSize,name,address,md5
+medium,BegBlag.mp3,7a8554af57f3664c1f7896cae2394119d8ead2d49e736b060d8a66fc6a2befa1,b5cbbfb4fd311c0913972f885cada4e8
+medium,An_Introduction_To_The_SafeNetwork.mp4,8ea1c3916136208065f7d2e0a6a12ee8301c07fe15a88565841d59a73fc9db55,35a9d8e9a28be554e00fb18c4d824913
+medium,Patosh-RoughNight.mp3,21aa171fe59bee10d88b10e26f43f4fcddf838d93aee88e18a1690dea8856753,452d1231d72489503ce73bc504b3da6e
 small,example1.txt,084537923247445948457989347533453,12345678 
 small,example2.txt,03299388829837472882832AZ423BO211,23456789 
 tiny,example3.txt,0JKWL38G7GH39FJD9J22KD03JJF9DNE33,34567890 
