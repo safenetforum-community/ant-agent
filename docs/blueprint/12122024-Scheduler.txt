@@ -1,0 +1,26 @@
+The scheduler will be responsible for calling job definitions, that have been downloaded from github, and allocated time periods and control options from a
+repeating 60 minute period.
+
+The scheduler will be subject to the kill-switch logic, to ensure the ability to terminate the test exists
+
+There will be no concept of date, days, hours - the only unit will be minutes from 0 through to 59
+
+Scheduled tests will be executed over a fixed 1 hour time window, to minimize the impact of timezones in syncronization of tasks.  This provides us with upto
+50 minutes in which tasks can be executed.
+
+The scheduler will refresh tasks automatically at 00 minutes, plus a random offset to avoid overloading github.
+
+The smallest scheduled unit is 1 minute
+
+The scheduler will not allow multiple tasks to be scheduled at the same time period.
+
+An optional time delta can be used to offset task execution by upto 5 minutes.
+
+The 5 minutes following the hour (01m,02m,03m,04m,05m) are reserved for fetching the new tasks to run - no tasks will be allowed to execute in this time period.
+
+The 5 minutes before the hour (55m,56m,57m,58m,59m) are reserved for cool down (cool down period) of tasks, and will not be used for job execution.  This
+is to ensure an orderly and control shutdown of the tasks, and to ensure we are not overwelming the target.
+
+Tasks that are still running inside the cool down period will be subject to being forceably killed by the thread worker agent.
+
+
