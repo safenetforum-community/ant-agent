@@ -158,17 +158,17 @@ class _Agent__Configuration:
     DEFAULT_LOG_LEVEL = 'INFO'  # DEBUG, ERROR, WARN, INFO #to-do : needs changing else too verbose
 
     SCHEDULER_CHECK = ":00" # What time (minutes) the scheduler will check for new jobs
-    SCHEDULER_URL = 'https://raw.githubusercontent.com/jadkins-me/safe-agent/main/tests/00-control.xml'
+    SCHEDULER_URL = 'https://raw.githubusercontent.com/safenetforum-community/ant-agent/main/tests/00-control.xml'
     SCHEDULER_NO_TASKS = [56, 57, 58, 59, 0, 1, 2, 3, 4]   # minutes when the schedule can't start new tasks
 
-    GIT_OWNER = "jadkins-me"
-    GIT_REPO = "safe-agent"
+    GIT_OWNER = "safenetforum-community"
+    GIT_REPO = "ant-agent"
     GIT_KILL_SWITCH_URL = "https://api.github.com/repos/{owner}/{repo}/issues"
 
     CACHE_FILE = './cache/cached_files.csv' 
     CACHE_INFO_FILE = './cache/cache_info.json' 
     CACHE_TIME = 3600 # 1 hour in seconds (must be only seconds)
-    CSV_URL = 'https://raw.githubusercontent.com/jadkins-me/safe-agent/main/tests/01-download-files.csv' 
+    CSV_URL = 'https://raw.githubusercontent.com/safenetforum-community/ant-agent/main/tests/01-download-files.csv' 
 
     DOWNLOAD_YIELD_SECS = 10 # When in repeat mode, this is how many seconds we yield on a thread before repeating
     DOWNLOAD_OFFSET_MAX_MINS = 10 # Maximum minutes allows for offsetting tasks
