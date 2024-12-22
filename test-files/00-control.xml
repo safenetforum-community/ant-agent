@@ -3,34 +3,32 @@
   <!-- Task to check download a tiny file, at 5 minutes past the hour -->
   <Task> 
     <TaskRef>001</TaskRef>
-    <Description>Download a tiny file from network once an hour at 5 minutes past the hour</Description>
+    <Description>Download a medium file from network</Description>
     <TimePeriod>5</TimePeriod>
     <TimeOffset>0</TimeOffset>
     <TestType>Download</TestType>
     <TestOptions>
-      <Option key="filesize" value="tiny"/>
-      <Option key="workers" value="7"/>
+      <Option key="filesize" value="medium"/>
+      <Option key="workers" value="4"/>
+      <Option key="offset" value="0"/> 
       <Option key="repeat" value="false"/>
-      <Option key="offset" value="2"/> 
-      <Option key="repeat" value="false"/>
-      <Option key="timeout" value="30"/> 
+      <Option key="timeout" value="60"/> 
       <Option key="retry" value="3"/> 
     </TestOptions> 
   </Task>
   <!-- Task to check download a small file, at 10 minutes past the hour -->
   <Task> 
     <TaskRef>002</TaskRef>
-    <Description>Download a small file from network once an hour at 10 minutes past the hour</Description>
+    <Description>Download a medium file from network</Description>
     <TimePeriod>10</TimePeriod>
     <TimeOffset>0</TimeOffset>
     <TestType>Download</TestType>
     <TestOptions>
-      <Option key="filesize" value="small"/>
-      <Option key="workers" value="5"/>
-      <Option key="repeat" value="false"/>
+      <Option key="filesize" value="medium"/>
+      <Option key="workers" value="1"/>
       <Option key="offset" value="false"/> 
       <Option key="repeat" value="false"/>
-      <Option key="timeout" value="30"/> 
+      <Option key="timeout" value="60"/> 
       <Option key="retry" value="3"/> 
     </TestOptions> 
   </Task>
