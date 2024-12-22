@@ -27,6 +27,7 @@ import kill_switch
 from log import LogWriter
 from agent.agent_helper import Utils
 from tabulate import tabulate
+from type_def import typedef_Agent_Task
 
 #get a handle to logging class
 log_writer = LogWriter()
@@ -225,12 +226,21 @@ class ScheduleManager:
             print(f"{table}")
         #endIfElse
 
-    #todo: needs rewrite as this will never fire due to data structure change
+    #todo: needs optimisation
     def task_already_scheduled(self, time):
-        for _, _, scheduled_time in self.tasks:
-            if scheduled_time == time:
-                return True
-        return False
+        #compiler hint
+        _task : typedef_Agent_Task = typedef_Agent_Task()
+        try:
+            for _task in self.tasks:
+                if _task.time_period == time:
+                    return True
+                #endIf
+            #endFor
+            return False
+        except Exception as e:
+            log_writer(f"ScheduleManager.task_already_scheduled: Threw Exception {e}", logging.DEBUG)
+            return True #as something is wrong with the task time
+        #endTry
 
     def run_task_manually(self):
         self.pause_schedule()
