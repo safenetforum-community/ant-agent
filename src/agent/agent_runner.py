@@ -84,7 +84,14 @@ class AgentRunner:
         pass
 
     def exec_quote_task(self, task : typedef_Agent_Task):
-        pass
+        self.__start_watchdog()
+
+        log_writer.log(f"AgentRunner.exec_quote_task: Start | task_ref:{task.task_ref}",logging.DEBUG)
+        
+        #todo : thread task
+
+        
+        log_writer.log(f"AgentRunner.exec_quote_task: Finished | task_ref:{task.task_ref}",logging.DEBUG)
     
     def exec_download_task(self, task : typedef_Agent_Task):
         self.__start_watchdog()

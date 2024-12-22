@@ -156,7 +156,7 @@ class ScheduleManager:
     def __quotetask_schedule(self, task):
         log_writer.log(f"> > {self.__class__.__name__}/{inspect.currentframe().f_code.co_name}: {task.task_ref}", logging.DEBUG )
 
-        if Utils.scheduler_no_tasks_window():
+        if helper.scheduler_no_tasks_window():
             log_writer.log(f"> > {self.__class__.__name__}/{inspect.currentframe().f_code.co_name}: _scheduler_no_tasks_window: TRUE", logging.DEBUG )
             #We can't execute this schedule, as we are in a no-tasks window
         elif killswitch_checker.check_for_kill_switch()[0]:
@@ -166,8 +166,11 @@ class ScheduleManager:
             try:
                 #pass the task over to the Agent Runner to spawn the workers
                 agent_runner = AgentRunner()
-                self.agent_runners.append(agent_runner) # Keep track of AgentRunner instances 
-                agent_runner.exec_quote_task(task)
+                #Note : args = tuple, so the random , is needed, else we don't pass the correct object
+                _agent_thread = threading.Thread(target=agent_runner.exec_quote_task,args=(task,),name=f"Thread-Runner.{task.task_ref}")
+                _agent_thread.setDaemon(True) # Make the thread a daemon thread
+                _agent_thread.start()
+
             except Exception as e:
                 log_writer.log(f"> > {self.__class__.__name__}/{inspect.currentframe().f_code.co_name}: {e}", logging.ERROR)
             #endTry
@@ -179,7 +182,7 @@ class ScheduleManager:
     def __uploadtask_schedule(self, task):
         log_writer.log(f"> > {self.__class__.__name__}/{inspect.currentframe().f_code.co_name}: {task.task_ref}", logging.DEBUG )
 
-        if Utils.scheduler_no_tasks_window():
+        if helper.scheduler_no_tasks_window():
             log_writer.log(f"> > {self.__class__.__name__}/{inspect.currentframe().f_code.co_name}: _scheduler_no_tasks_window: TRUE", logging.DEBUG )
             #We can't execute this schedule, as we are in a no-tasks window
         elif killswitch_checker.check_for_kill_switch()[0]:
@@ -189,8 +192,11 @@ class ScheduleManager:
             try:
                 #pass the task over to the Agent Runner to spawn the workers
                 agent_runner = AgentRunner()
-                self.agent_runners.append(agent_runner) # Keep track of AgentRunner instances 
-                agent_runner.exec_upload_task(task)
+                #Note : args = tuple, so the random , is needed, else we don't pass the correct object
+                _agent_thread = threading.Thread(target=agent_runner.exec_upload_task,args=(task,),name=f"Thread-Runner.{task.task_ref}")
+                _agent_thread.setDaemon(True) # Make the thread a daemon thread
+                _agent_thread.start()
+                
             except Exception as e:
                 log_writer.log(f"> > {self.__class__.__name__}/{inspect.currentframe().f_code.co_name}: {e}", logging.ERROR)
             #endTry
