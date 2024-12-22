@@ -1,0 +1,7 @@
+The agent will use environmental defaults for tasks, and tests to minimise the impact on an agent machine.
+
+This will be limiting by default the number of task threads that can be spawned.  A thread = A parallel test being executed, the more threads, the
+more parallel tests being executed, and the greater the load on the agent machine.
+
+It is anticipated that there will be multiple agent profiles that people can choose from, to cater for people with more extensive compute and internet, however
+the default will be set at a minimum.
