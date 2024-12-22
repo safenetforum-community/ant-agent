@@ -1,0 +1,24 @@
+# QUOTE-FILES.CSV
+# refer to blueprint on suitable options for filesize, and what they relate to
+# We use a master seed, to allow the files being generated to be identically created, without needing the file to be supplied
+#
+# filesize : tiny, small, medium, large, huge, giga, tera, chunka, chunkb
+# seed : unique file seed number
+# size : bytes of file to create within its filesize spec
+# md5 : this is the md5 hash of the file which will be created, needed as some processor implementations of seed files can generate different content
+#
+#    tiny = files with a size below 128k
+#    small = files with a size of 129k > 4Mb
+#    medium = files with a size of 4Mb > 32MB
+#    large = files with a size of 32MB > 60MB
+#    huge = files with a size of 128MB > 1G
+#    giga = files with a size of 1G > 20G
+#    tera = files with a size of 20G > 100G
+# --------------------------------------------------------------------------------------------------------------------------------------------
+fileSize,seed,size,md5
+tiny,93485,65536,9503998934443
+small,33643,3145728,93482999549999
+medium,73467,31457280,7843775545433
+large,242390,60850048,42342345322323
+huge,157305,838860800,34234543354353
+giga,774267,2147483648,232434232322
