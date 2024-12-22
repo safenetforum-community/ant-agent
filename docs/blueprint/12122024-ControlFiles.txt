@@ -1,0 +1,58 @@
+Control files will initially be used from github to program the scheduler on what tasks it will be executing in the following 50 minute period.
+
+The control file will be in XML format
+
+<Schedule>
+  <Task> 
+    <TaskRef>001</TaskRef>     
+    <Description>Brief Task Description</Description> 
+    <TimePeriod>5</TimePeriod>
+    <TimeOffset>0</TimeOffset>
+    <TestType>Download</TestType>
+    <TestOptions>
+      <Option key="filesize" value="tiny"/>
+      <Option key="workers" value="1"/>
+      <Option key="offset" value="false"/> 
+      <Option key="repeat" value="true"/>
+      <Option key="timeout" value="30"/> 
+      <Option key="retry" value="3"/> 
+    </TestOptions> 
+  </Task>
+  <Task> 
+    <-- repeating task block with other tests -->
+  </Task>
+</Schedule>
+
+Taskref : Unique task reference starting at 001
+Description : Brief few words of what this task is doing
+TimePeriod : Time slot within the 60 minute window when we would like this task to start, please reference scheduler blueprint for more info.
+TimeOffset : Value in minutes, upto 5 minutes, that will be applied randomly to the TimePeriod to allow a delta in when tasks start.
+TestType : The type of test this task will execute, i.e Download, Quote, Upload, refer to blueprint for more info on these tests.
+
+TestOptions : These are TestType specific over-rides, that can be specified for a task
+
+From the "Download" TestType we provide;
+
+filesize : The size of file to download - an XML file of valid network files will be provided, from which the agent can choose randomly based on size.
+    tiny = files with a size below 128k
+    small = files with a size of 129k > 4Mb
+    medium = files with a size of 4Mb > 32MB
+    large = files with a size of 32MB > 60MB
+    huge = files with a size of 128MB > 1G
+    giga = files with a size of 1G > 20G
+    tera = files with a size of 20G > 100G
+    chunka = file with a size of exactly 4Mb
+    chunkb = file with a size of exactly 64MB
+
+workers : the number of thread workers which will run this task - WARNING : this directly impacts the load the agent will generate.  A value of 1 (default) will 
+cause a single thread, to be running the download task, setting this to 2 causes another thread to be created and 2 tests would be running by the scheduler.
+Setting this too high (i.e 100) could see the agent machine grind to a halt - It would be expected that tests being run will slowly increment this number to 
+maintain network stability.
+
+offset : an arbitary time period, to apply a delta to the tasks to ensure they don't all start at the same time (only applicable when workers > 1)
+
+repeat : if present, and set to true - then the task will repeat until killed by the 55m scheduler.
+
+timeout : how long we allow a task to execute before we force terminate it.
+
+retry : how many times we retry a task, if it fails.
