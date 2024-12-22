@@ -1,0 +1,22 @@
+The Kill-Switch, is a facility to ensure that "some" people are able to facilitate an agent shutdown, without having to rely on a centralised individual
+to terminate the agent tasks.
+
+The agent must default to a failed state - the assumption should always be that the kill switch is active, and no tasks are executed.
+
+To avoid github rate limiting, a maximum of 60 calls to the Kill-Switch must be asserted in code, over any 60 minute period.
+
+While the kill-switch is active, no new tasks should be executed by the agent, and running tasks should be gracefully terminated.
+
+
+To activate the kill-switch;
+
+current thinking is that an issue can be created in the repo "issues log", and labeled with an existing github tag "kill-switch" - it would be nice to have
+a title, and brief description of what impact has been seen - but that could be added later via templating.
+
+
+To remove the kill-switch;
+
+The issue needs to be updated, and closed - the agent's will not re-activate until 00 minutes on the next scheduled task refresh - existing schedules will be
+dropped.
+
+Ideally, there should be some forumn investigation into what happened, with an outcome to review the task definitions.
