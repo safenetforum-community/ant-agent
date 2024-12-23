@@ -232,6 +232,41 @@ class ScheduleManager:
             print(f"{table}")
         #endIfElse
 
+    def get_status(self): #todo
+        _table_data = []
+
+        _main_thread = threading.main_thread() 
+        _threads = threading.enumerate()
+        _non_main_thread_names = [thread.name for thread in _threads if thread != _main_thread]
+
+        _count_watchdog = 0
+        _count_schedulemanager = 0
+        _count_performance = 0
+        _count_runner = 0
+        for _thread in _non_main_thread_names:
+            if "watchdog" in _thread.lower():
+                _count_watchdog += 1
+            elif "schedulemanager" in _thread.lower():
+                _count_schedulemanager += 1
+            elif "performance" in _thread.lower():
+                _count_performance += 1
+            elif "runner" in _thread.lower():
+                _count_runner += 1
+            #endIfElse    
+        #endFor
+
+        _table_data.append( {
+            "Schedule Manager": f"{_count_schedulemanager}",
+            "Thread Watchdog" : f"{_count_watchdog}",
+            "Performance Writer": f"{_count_performance}", 
+            "Task Runners": f"{_count_runner}"
+        }) 
+
+        # Create a nice looking table 
+        table = tabulate(_table_data, headers="keys", tablefmt="grid", numalign="centre")
+
+        print("\n" + table + "\n")
+
     #todo: needs optimisation
     def task_already_scheduled(self, time):
         #compiler hint

@@ -129,6 +129,11 @@ if __name__ == "__main__":
                 pause_input_getch()
                 schedule_manager.fetch_tasks()
                 start_input_getch()
+            elif user_input == 's':
+                flush_input()
+                pause_input_getch()
+                schedule_manager.get_status()
+                start_input_getch()
             elif user_input == 'r':
                 flush_input()
                 pause_input_getch()
