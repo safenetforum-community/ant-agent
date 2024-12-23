@@ -299,7 +299,7 @@ class ScheduleManager:
 
     def __purge_envionment(self):
         #todo : routines to clear out old test runs, logs, and cache
-        log_writer("ScheduleManager.__purge_environment: Purging previous temporary test files, this may take a few minutes",logging.INFO)
+        log_writer.log("ScheduleManager.__purge_environment: Purging previous temporary test files, this may take a few minutes",logging.INFO)
 
     def terminate(self):
         log_writer.log(f"ScheduleManager.Terminate: Started", logging.DEBUG)
