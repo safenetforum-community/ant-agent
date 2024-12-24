@@ -198,7 +198,8 @@ class ant_client:
          command = [ 
             './bin/ant', 
             '--peer', str(cls_agent.Configuration.CLIENT_PEERS),
-            '--timeout', str(timeout), 
+            '--timeout', str(timeout),
+            '--ignore-cache',
             '--log-output-dest', 
             temp_file_name_log, 
             'file', 
@@ -210,6 +211,7 @@ class ant_client:
          command = [ 
             './bin/ant', 
             '--timeout', str(timeout), 
+            '--ignore-cache',
             '--log-output-dest', 
             temp_file_name_log, 
             'file', 
