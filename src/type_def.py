@@ -15,7 +15,7 @@ permissions and limitations relating to use of the Code/Software.
 ===================================================================================================
 """
 
-from dataclasses import dataclass, field
+from dataclasses import dataclass #field
 from typing import Literal
 
 # Define the literals 
@@ -54,7 +54,7 @@ class typedef_Agent_Task:
     test_type : _TestType = None          # Type of test i.e. download, quote, upload
     description : str = None             # Brief description of task
     #todo : test_options: 'typedef_Agent_Task_Options' = field(default_factory=typedef_Agent_Task_Options) # A class of class options #endClass
-    test_options: 'typedef_Agent_Task_Options' = typedef_Agent_Task_Options()
+    test_options: 'typedef_Agent_Task_Options' = None
 #endClass
 
 @dataclass 
