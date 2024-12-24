@@ -32,4 +32,52 @@
       <Option key="retry" value="3"/> 
     </TestOptions> 
   </Task>
+  <!-- Task to quote -->
+  <Task> 
+    <TaskRef>010</TaskRef>
+    <Description>Quote for upload</Description>
+    <TimePeriod>15</TimePeriod>
+    <TimeOffset>0</TimeOffset>
+    <TestType>quote</TestType>
+    <TestOptions>
+      <Option key="filesize" value="medium"/>
+      <Option key="workers" value="1"/>
+      <Option key="offset" value="false"/> 
+      <Option key="repeat" value="false"/>
+      <Option key="timeout" value="60"/> 
+      <Option key="retry" value="3"/> 
+    </TestOptions> 
+  </Task>
+  <!-- Task to quote -->
+  <Task> 
+    <TaskRef>011</TaskRef>
+    <Description>Quote for upload</Description>
+    <TimePeriod>17</TimePeriod>
+    <TimeOffset>0</TimeOffset>
+    <TestType>quote</TestType>
+    <TestOptions>
+      <Option key="filesize" value="large"/>
+      <Option key="workers" value="1"/>
+      <Option key="offset" value="false"/> 
+      <Option key="repeat" value="false"/>
+      <Option key="timeout" value="60"/> 
+      <Option key="retry" value="3"/> 
+    </TestOptions> 
+  </Task>
+    <!-- Task to quote -->
+  <Task> 
+    <TaskRef>011</TaskRef>
+    <Description>Quote for upload</Description>
+    <TimePeriod>19</TimePeriod>
+    <TimeOffset>0</TimeOffset>
+    <TestType>quote</TestType>
+    <TestOptions>
+      <Option key="filesize" value="huge"/>
+      <Option key="workers" value="1"/>
+      <Option key="offset" value="false"/> 
+      <Option key="repeat" value="false"/>
+      <Option key="timeout" value="60"/> 
+      <Option key="retry" value="3"/> 
+    </TestOptions> 
+  </Task>
 </Schedule>
