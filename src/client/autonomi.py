@@ -25,7 +25,7 @@ import hashlib
 from log import LogWriter
 from application import Agent
 from type_def import typedef_Agent_Client_Response, typedef_Agent_Client_File
-from client import autonomi_messages
+from . import autonomi_messages
 
 cls_agent = Agent()
 log_writer = LogWriter()
