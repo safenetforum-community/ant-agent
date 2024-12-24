@@ -61,7 +61,7 @@ class Performance:
                 cls_agent.Exception.throw(error=(f"{self.__class__.__name__}/{inspect.currentframe().f_code.co_name}: Permission or File access Error"))
             
             self.flush_thread = threading.Thread(target=self.__flush_periodically, daemon=True, name="Thread-4(Performance._flush_periodically)") 
-            self.flush_thread.start() 
+            self.flush_thread.start()       
 
     def __flush_periodically(self): 
         # Background thread method to flush metrics every 1 minute 
@@ -86,17 +86,17 @@ class Performance:
                         f"{self.perf_influxdb},"
                         f"tele_c={cls_agent.Configuration.TELEMETRY_COUNTRY},"
                         f"tele_p={cls_agent.Configuration.TELEMETRY_PROVISON},"
-                        f"type={_metric.test_type} "    #need a space here at end
-                        f"filesize={_metric.filesize},"
-                        f"md5checker={_metric.md5_checked},"
-                        f"md5valid={_metric.md5_valid},"
+                        f"type=\"{_metric.test_type}\" "    #need a space here at end
+                        f"filesize=\"{_metric.filesize}\","
+                        f"md5checker={int(_metric.md5_checked)},"
+                        f"md5valid={int(_metric.md5_valid)},"
                         f"cost={_metric.cost},"
-                        f"client_ok={_metric.client_ok},"
-                        f"client_kill={_metric.client_killed},"
-                        f"client_err={_metric.client_error},"
-                        f"network_err={_metric.network_error}," 
-                        f"network_err={_metric.network_data_loss}," 
-                        f"unknown_err={_metric.unknown_error}," 
+                        f"client_ok={int(_metric.client_ok)},"
+                        f"client_kill={int(_metric.client_killed)},"
+                        f"client_err={int(_metric.client_error)},"
+                        f"network_err={int(_metric.network_error)}," 
+                        f"data_loss={int(_metric.network_data_loss)}," 
+                        f"unknown_err={int(_metric.unknown_error)}," 
                         f"exec_time={_metric.execution} " #need a space here at end
                         f"{self.__get_influxdb_time()}\n"))
                 #endFor

@@ -169,10 +169,16 @@ class _Agent__Configuration:
     CACHE_INFO_FILE = './cache/cache_info.json' 
     CACHE_TIME = 3600 # 1 hour in seconds (must be only seconds)
     CSV_URL = 'https://raw.githubusercontent.com/safenetforum-community/ant-agent/main/test-files/01-download-files.csv' 
+    
+    #Quote Processing
+    CSV_QUOTE_URL = 'https://raw.githubusercontent.com/safenetforum-community/ant-agent/main/test-files/02-quote-files.csv' 
+    CACHE_QUOTE_FILE = './cache/cached_quote_files.csv' 
+    CACHE_QUOTE_META = './cache/cache_quote_info.json' 
 
     DOWNLOAD_YIELD_SECS = 10 # When in repeat mode, this is how many seconds we yield on a thread before repeating
     DOWNLOAD_OFFSET_MAX_MINS = 10 # Maximum minutes allows for offsetting tasks
     
+    QUOTE_YIELD_SECS = 10 # When in repeat mode, this is how many seconds we yield on a thread before repeating
 
     TELEMETRY_COUNTRY = None
     TELEMETRY_PROVISON = None

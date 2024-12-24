@@ -27,7 +27,7 @@ import kill_switch
 from log import LogWriter
 from agent.agent_helper import Utils
 from tabulate import tabulate
-from type_def import typedef_Agent_Task
+from type_def import typedef_Agent_Task,typedef_Agent_Task_Options
 
 #get a handle to logging class
 log_writer = LogWriter()
@@ -86,6 +86,7 @@ class ScheduleManager:
         return f":{padded_minutes}"
 
     def __add_task(self, task):
+        #todo: needs tidy up
         if self.task_already_scheduled(self.__convert_to_colon_format(task.time_period)):
             log_writer.log(f"Task already scheduled at {self.__convert_to_colon_format(task.time_period)}", logging.ERROR)
             return
@@ -94,10 +95,10 @@ class ScheduleManager:
             self.tasks.append(task)
         elif task.test_type.lower() == "quote":
             self._schedulerSM.every().hour.at(self.__convert_to_colon_format(task.time_period)).do(self.__quotetask_schedule, task)
-            self.tasks.append((task, "quote", self.__convert_to_colon_format(task.time_period)))
+            self.tasks.append(task)
         elif task.test_type.lower() == "upload":
             self._schedulerSM.every().hour.at(self.__convert_to_colon_format(task.time_period)).do(self.__uploadtask_schedule, task)
-            self.tasks.append((task, "upload", self.__convert_to_colon_format(task.time_period)))
+            self.tasks.append(task)
         else:
             log_writer.log(f"Unknown test type: {task.test_type}", logging.ERROR)
             
@@ -156,7 +157,7 @@ class ScheduleManager:
     def __quotetask_schedule(self, task):
         log_writer.log(f"> > {self.__class__.__name__}/{inspect.currentframe().f_code.co_name}: {task.task_ref}", logging.DEBUG )
 
-        if Utils.scheduler_no_tasks_window():
+        if helper.scheduler_no_tasks_window():
             log_writer.log(f"> > {self.__class__.__name__}/{inspect.currentframe().f_code.co_name}: _scheduler_no_tasks_window: TRUE", logging.DEBUG )
             #We can't execute this schedule, as we are in a no-tasks window
         elif killswitch_checker.check_for_kill_switch()[0]:
@@ -166,8 +167,11 @@ class ScheduleManager:
             try:
                 #pass the task over to the Agent Runner to spawn the workers
                 agent_runner = AgentRunner()
-                self.agent_runners.append(agent_runner) # Keep track of AgentRunner instances 
-                agent_runner.exec_quote_task(task)
+                #Note : args = tuple, so the random , is needed, else we don't pass the correct object
+                _agent_thread = threading.Thread(target=agent_runner.exec_quote_task,args=(task,),name=f"Thread-Runner.{task.task_ref}")
+                _agent_thread.setDaemon(True) # Make the thread a daemon thread
+                _agent_thread.start()
+
             except Exception as e:
                 log_writer.log(f"> > {self.__class__.__name__}/{inspect.currentframe().f_code.co_name}: {e}", logging.ERROR)
             #endTry
@@ -179,7 +183,7 @@ class ScheduleManager:
     def __uploadtask_schedule(self, task):
         log_writer.log(f"> > {self.__class__.__name__}/{inspect.currentframe().f_code.co_name}: {task.task_ref}", logging.DEBUG )
 
-        if Utils.scheduler_no_tasks_window():
+        if helper.scheduler_no_tasks_window():
             log_writer.log(f"> > {self.__class__.__name__}/{inspect.currentframe().f_code.co_name}: _scheduler_no_tasks_window: TRUE", logging.DEBUG )
             #We can't execute this schedule, as we are in a no-tasks window
         elif killswitch_checker.check_for_kill_switch()[0]:
@@ -189,8 +193,11 @@ class ScheduleManager:
             try:
                 #pass the task over to the Agent Runner to spawn the workers
                 agent_runner = AgentRunner()
-                self.agent_runners.append(agent_runner) # Keep track of AgentRunner instances 
-                agent_runner.exec_upload_task(task)
+                #Note : args = tuple, so the random , is needed, else we don't pass the correct object
+                _agent_thread = threading.Thread(target=agent_runner.exec_upload_task,args=(task,),name=f"Thread-Runner.{task.task_ref}")
+                _agent_thread.setDaemon(True) # Make the thread a daemon thread
+                _agent_thread.start()
+                
             except Exception as e:
                 log_writer.log(f"> > {self.__class__.__name__}/{inspect.currentframe().f_code.co_name}: {e}", logging.ERROR)
             #endTry
@@ -226,6 +233,42 @@ class ScheduleManager:
             print(f"{table}")
         #endIfElse
 
+    def get_status(self): #todo
+        _table_data = []
+
+        _main_thread = threading.main_thread() 
+        _threads = threading.enumerate()
+        _non_main_thread_names = [thread.name for thread in _threads if thread != _main_thread]
+
+        _count_watchdog = 0
+        _count_schedulemanager = 0
+        _count_performance = 0
+        _count_runner = 0
+        for _thread in _non_main_thread_names:
+            if "watchdog" in _thread.lower():
+                _count_watchdog += 1
+            elif "schedulemanager" in _thread.lower():
+                _count_schedulemanager += 1
+            elif "performance" in _thread.lower():
+                _count_performance += 1
+            elif "runner" in _thread.lower():
+                _count_runner += 1
+            #endIfElse    
+        #endFor
+
+        #todo - this need not be in a variable
+        _table_data.append( {
+            "Schedule Manager": f"{_count_schedulemanager}",
+            "Thread Watchdog" : f"{_count_watchdog}",
+            "Performance Writer": f"{_count_performance}", 
+            "Task Runners": f"{_count_runner}"
+        }) 
+
+        # Create a nice looking table 
+        table = tabulate(_table_data, headers="keys", tablefmt="grid", numalign="centre")
+
+        print("\n" + table + "\n")
+
     #todo: needs optimisation
     def task_already_scheduled(self, time):
         #compiler hint
@@ -238,7 +281,7 @@ class ScheduleManager:
             #endFor
             return False
         except Exception as e:
-            log_writer(f"ScheduleManager.task_already_scheduled: Threw Exception {e}", logging.DEBUG)
+            log_writer.log(f"ScheduleManager.task_already_scheduled: Threw Exception {e}", logging.DEBUG)
             return True #as something is wrong with the task time
         #endTry
 

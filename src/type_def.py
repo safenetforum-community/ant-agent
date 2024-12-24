@@ -15,7 +15,7 @@ permissions and limitations relating to use of the Code/Software.
 ===================================================================================================
 """
 
-from dataclasses import dataclass
+from dataclasses import dataclass #field
 from typing import Literal
 
 # Define the literals 
@@ -34,16 +34,8 @@ class typedef_Agent_Client_Response:
     network_error : bool = False         # True, an error occured with the network
     network_data_loss : bool = False     # True, a data loss event has occured
     unknown_error : bool = False         # True, an unknown error occured
+    cost: float = 0      
 #endClass 
-
-@dataclass
-class typedef_Agent_Task:
-    task_ref : str = None                # Task Reference 000 through to 999
-    time_period : str = None             # Time Period from 00 through to 59 (minutes)
-    test_type : _TestType = None          # Type of test i.e. download, quote, upload
-    description : str = None             # Brief description of task
-    test_options : 'typedef_Agent_Task_Options' = None  # A class of class options
-#endClass
 
 @dataclass
 class typedef_Agent_Task_Options:
@@ -53,6 +45,16 @@ class typedef_Agent_Task_Options:
     repeat : bool = False                # If True, then repeat the task
     retry : int = 0                      # retry count on failure
     timeout : int = 30                   # timeout for executing a command
+#endClass
+
+@dataclass
+class typedef_Agent_Task:
+    task_ref : str = None                # Task Reference 000 through to 999
+    time_period : str = None             # Time Period from 00 through to 59 (minutes)
+    test_type : _TestType = None          # Type of test i.e. download, quote, upload
+    description : str = None             # Brief description of task
+    #todo : test_options: 'typedef_Agent_Task_Options' = field(default_factory=typedef_Agent_Task_Options) # A class of class options #endClass
+    test_options: 'typedef_Agent_Task_Options' = None
 #endClass
 
 @dataclass 
@@ -78,6 +80,14 @@ class typedef_Agent_Performance:
 
 @dataclass
 class typedef_Agent_Downloader:
+    filesize: _filesize = None
+    offset : int = 0                     # Offset of task in minutes
+    repeat : bool = False                # If True, then repeat the task, 
+    timeout : int = 30                   # timeout for executing a command
+    retry : int = 0                      # retry count on failure
+
+@dataclass
+class typedef_Agent_Quoter:
     filesize: _filesize = None
     offset : int = 0                     # Offset of task in minutes
     repeat : bool = False                # If True, then repeat the task, 
