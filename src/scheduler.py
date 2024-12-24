@@ -27,7 +27,7 @@ import kill_switch
 from log import LogWriter
 from agent.agent_helper import Utils
 from tabulate import tabulate
-from type_def import typedef_Agent_Task
+from type_def import typedef_Agent_Task,typedef_Agent_Task_Options
 
 #get a handle to logging class
 log_writer = LogWriter()
@@ -86,6 +86,7 @@ class ScheduleManager:
         return f":{padded_minutes}"
 
     def __add_task(self, task):
+        #todo: needs tidy up
         if self.task_already_scheduled(self.__convert_to_colon_format(task.time_period)):
             log_writer.log(f"Task already scheduled at {self.__convert_to_colon_format(task.time_period)}", logging.ERROR)
             return
@@ -94,10 +95,10 @@ class ScheduleManager:
             self.tasks.append(task)
         elif task.test_type.lower() == "quote":
             self._schedulerSM.every().hour.at(self.__convert_to_colon_format(task.time_period)).do(self.__quotetask_schedule, task)
-            self.tasks.append((task, "quote", self.__convert_to_colon_format(task.time_period)))
+            self.tasks.append(task)
         elif task.test_type.lower() == "upload":
             self._schedulerSM.every().hour.at(self.__convert_to_colon_format(task.time_period)).do(self.__uploadtask_schedule, task)
-            self.tasks.append((task, "upload", self.__convert_to_colon_format(task.time_period)))
+            self.tasks.append(task)
         else:
             log_writer.log(f"Unknown test type: {task.test_type}", logging.ERROR)
             
@@ -255,6 +256,7 @@ class ScheduleManager:
             #endIfElse    
         #endFor
 
+        #todo - this need not be in a variable
         _table_data.append( {
             "Schedule Manager": f"{_count_schedulemanager}",
             "Thread Watchdog" : f"{_count_watchdog}",
@@ -279,7 +281,7 @@ class ScheduleManager:
             #endFor
             return False
         except Exception as e:
-            log_writer(f"ScheduleManager.task_already_scheduled: Threw Exception {e}", logging.DEBUG)
+            log_writer.log(f"ScheduleManager.task_already_scheduled: Threw Exception {e}", logging.DEBUG)
             return True #as something is wrong with the task time
         #endTry
 

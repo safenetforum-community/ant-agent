@@ -23,8 +23,9 @@ import threading
 import time 
 from datetime import datetime, timedelta
 from agent.agent_download import AgentDownloader
+from agent.agent_quote import AgentQuoter
 from typing import get_args
-from type_def import _filesize , typedef_Agent_Task , typedef_Agent_Downloader
+from type_def import _filesize , typedef_Agent_Task , typedef_Agent_Downloader, typedef_Agent_Quoter
 
 #get a handle to the logging class
 log_writer = LogWriter()
@@ -88,8 +89,63 @@ class AgentRunner:
 
         log_writer.log(f"AgentRunner.exec_quote_task: Start | task_ref:{task.task_ref}",logging.DEBUG)
         
-        #todo : thread task
+        _Agent_Quote = typedef_Agent_Quoter()
 
+        # Get the workers value and ensure it's an integer, defaulting to the integer default if not present
+        try: 
+            _workers = min(int(task.test_options.get('workers', CONST_DEFAULT_WORKERS)), CONST_MAX_WORKERS)
+        except Exception as e:
+            _workers = CONST_DEFAULT_WORKERS
+        #endTry
+        
+        try:
+            filesize = task.test_options.get('filesize', CONST_DEFAULT_FILESIZE).lower()
+        
+            if filesize not in get_args(_filesize):
+                _Agent_Quote.filesize = CONST_DEFAULT_FILESIZE
+            else:
+                _Agent_Quote.filesize = filesize
+            #endIf
+        except Exception as e:
+            _Agent_Quote.filesize = CONST_DEFAULT_FILESIZE
+        #endTry
+
+        #todo : need to handle missing values better
+        _Agent_Quote.offset = task.test_options.get('offset', CONST_DEFAULT_OFFSET)
+        _Agent_Quote.timeout = task.test_options.get('timeout', CONST_DEFAULT_TIMEOUT)
+        _Agent_Quote.retry = task.test_options.get('retry', CONST_DEFAULT_RETRY)
+        _Agent_Quote.repeat = task.test_options.get('repeat', CONST_DEFAULT_REPEAT)
+        
+        log_writer.log(f"AgentRuner.exec_quote_task: Processing | task_ref:{task.task_ref} | filesize:{filesize} | workers:{_workers}",logging.DEBUG)
+        
+        _threads = []
+
+        #todo : tidy and verify
+        #spawn the thread workers
+        for i in range(_workers):
+            _quoteclient = AgentQuoter()
+            _quoteclient_thread = threading.Thread(target=_quoteclient.quote, args=([_Agent_Quote]), name=f"Thread-2(AgentRunner.Quote).{task.task_ref}")
+            _quoteclient_thread.setDaemon(True)
+            _threads.append(_quoteclient_thread)
+            _quoteclient_thread.start()
+                
+        _thread_count = len(_threads)
+
+        while len(_threads) > 0 and not self._stop_watchdog.is_set():
+            for thread in _threads:
+                if thread.is_alive():
+                    thread.join(timeout=1)
+                else:
+                    _thread_count=_thread_count-1   
+                #endIf
+                if _thread_count == 0:
+                    break
+                #endIf
+            #endFor
+            if _thread_count == 0:
+                self._stop_watchdog.set()
+                log_writer.log(f"AgentRunner.exec_quote_task: Control thread loop exited | task_ref:{task.task_ref}",logging.DEBUG)
+        #endWhile
         
         log_writer.log(f"AgentRunner.exec_quote_task: Finished | task_ref:{task.task_ref}",logging.DEBUG)
     
