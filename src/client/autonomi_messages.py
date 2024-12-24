@@ -20,7 +20,9 @@ _error_client = "error:client"
 _error_dataloss = "error:dataloss"
 
 _error_messages = {
+    #quote
     "cost error: not enough node quotes" : _error_network,
+    #download
     "failed to fetch data from address" : _error_dataloss,
     "could not connect to enough peers in time": _error_network,
     "failed to connect to the network": _error_network,
