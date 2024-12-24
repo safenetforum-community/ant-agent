@@ -15,9 +15,10 @@ permissions and limitations relating to use of the Code/Software.
 ===================================================================================================
 """
 
-_error_network ="error:network"
-_error_client = "error:client"
-_error_dataloss = "error:dataloss"
+#Error objects that can be returned
+_error_network ="error:network"                 # problem with the network, usually around node
+_error_client = "error:client"                  # problem with client, i.e timeout, lookup error
+_error_dataloss = "error:dataloss"              # problem causes by not being able to retrieve a file from network
 
 _error_messages = {
     #quote
