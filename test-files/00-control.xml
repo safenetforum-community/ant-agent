@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Schedule>
-  <!-- Task to check download a tiny file, at 5 minutes past the hour -->
+  <!-- 001 Download -->
   <Task> 
     <TaskRef>001</TaskRef>
     <Description>Download a medium file from network</Description>
@@ -9,34 +9,82 @@
     <TestType>Download</TestType>
     <TestOptions>
       <Option key="filesize" value="medium"/>
-      <Option key="workers" value="4"/>
-      <Option key="offset" value="0"/> 
+      <Option key="workers" value="2"/>
+      <Option key="offset" value="1"/> 
       <Option key="repeat" value="false"/>
       <Option key="timeout" value="60"/> 
       <Option key="retry" value="3"/> 
     </TestOptions> 
   </Task>
-  <!-- Task to check download a small file, at 10 minutes past the hour -->
+  <!-- 002 Download -->
   <Task> 
     <TaskRef>002</TaskRef>
     <Description>Download a medium file from network</Description>
-    <TimePeriod>10</TimePeriod>
+    <TimePeriod>15</TimePeriod>
     <TimeOffset>0</TimeOffset>
     <TestType>Download</TestType>
     <TestOptions>
       <Option key="filesize" value="medium"/>
-      <Option key="workers" value="1"/>
-      <Option key="offset" value="false"/> 
+      <Option key="workers" value="4"/>
+      <Option key="offset" value="1"/> 
       <Option key="repeat" value="false"/>
       <Option key="timeout" value="60"/> 
       <Option key="retry" value="3"/> 
     </TestOptions> 
   </Task>
-  <!-- Task to quote -->
+  <!-- 003 Download -->
+  <Task> 
+    <TaskRef>003</TaskRef>
+    <Description>Download a medium file from network</Description>
+    <TimePeriod>25</TimePeriod>
+    <TimeOffset>0</TimeOffset>
+    <TestType>Download</TestType>
+    <TestOptions>
+      <Option key="filesize" value="medium"/>
+      <Option key="workers" value="6"/>
+      <Option key="offset" value="1"/> 
+      <Option key="repeat" value="false"/>
+      <Option key="timeout" value="60"/> 
+      <Option key="retry" value="3"/> 
+    </TestOptions> 
+  </Task>
+  <!-- 004 Download -->
+  <Task> 
+    <TaskRef>004</TaskRef>
+    <Description>Download a medium file from network</Description>
+    <TimePeriod>35</TimePeriod>
+    <TimeOffset>0</TimeOffset>
+    <TestType>Download</TestType>
+    <TestOptions>
+      <Option key="filesize" value="medium"/>
+      <Option key="workers" value="8"/>
+      <Option key="offset" value="1"/> 
+      <Option key="repeat" value="false"/>
+      <Option key="timeout" value="60"/> 
+      <Option key="retry" value="3"/> 
+    </TestOptions> 
+  </Task>
+  <!-- 005 Download -->
+  <Task> 
+    <TaskRef>005</TaskRef>
+    <Description>Download a medium file from network</Description>
+    <TimePeriod>45</TimePeriod>
+    <TimeOffset>0</TimeOffset>
+    <TestType>Download</TestType>
+    <TestOptions>
+      <Option key="filesize" value="medium"/>
+      <Option key="workers" value="2"/>
+      <Option key="offset" value="1"/> 
+      <Option key="repeat" value="false"/>
+      <Option key="timeout" value="60"/> 
+      <Option key="retry" value="3"/> 
+    </TestOptions> 
+  </Task>
+  <!-- 010 Quote -->
   <Task> 
     <TaskRef>010</TaskRef>
     <Description>Quote for upload</Description>
-    <TimePeriod>15</TimePeriod>
+    <TimePeriod>10</TimePeriod>
     <TimeOffset>0</TimeOffset>
     <TestType>quote</TestType>
     <TestOptions>
@@ -48,11 +96,11 @@
       <Option key="retry" value="3"/> 
     </TestOptions> 
   </Task>
-  <!-- Task to quote -->
+  <!-- 011 Quote -->
   <Task> 
     <TaskRef>011</TaskRef>
     <Description>Quote for upload</Description>
-    <TimePeriod>17</TimePeriod>
+    <TimePeriod>20</TimePeriod>
     <TimeOffset>0</TimeOffset>
     <TestType>quote</TestType>
     <TestOptions>
@@ -64,11 +112,11 @@
       <Option key="retry" value="3"/> 
     </TestOptions> 
   </Task>
-    <!-- Task to quote -->
+  <!-- 012 Quote -->
   <Task> 
     <TaskRef>012</TaskRef>
     <Description>Quote for upload</Description>
-    <TimePeriod>19</TimePeriod>
+    <TimePeriod>30</TimePeriod>
     <TimeOffset>0</TimeOffset>
     <TestType>quote</TestType>
     <TestOptions>
