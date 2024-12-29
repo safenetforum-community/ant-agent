@@ -4,6 +4,12 @@ Notice : Please don't run this unattended, it's not stable enough currently.
 
 The TODO.md will be kept upto date(tm) with areas that need attention.
 
+## Grafana Dashboard
+
+The agent self hosts it's own data, and a bundled grafan dashboard can be used to visulize this.
+
+![screenshot](img/ant-agent-overview.png)
+
 ## Distributed Agent Tests
 
 The agent looks at this Github Repo for task scripts, they are found under **test-files**, the main control file that tells the agent what to do is '00-control.xml'
