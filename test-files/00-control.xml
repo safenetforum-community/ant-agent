@@ -57,7 +57,7 @@
     <TestType>Download</TestType>
     <TestOptions>
       <Option key="filesize" value="medium"/>
-      <Option key="workers" value="8"/>
+      <Option key="workers" value="4"/>
       <Option key="offset" value="1"/> 
       <Option key="repeat" value="false"/>
       <Option key="timeout" value="60"/> 
