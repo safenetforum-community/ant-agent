@@ -292,8 +292,10 @@ class ScheduleManager:
 
         _response = input("Task Ref (blank to exit and resume schedule)=")
 
+        _task_found = False
         #todo - needs finishing
         for task in self.tasks:
+
             if task.task_ref == _response:
                 log_writer.log(f"Manually launching {_response}",logging.INFO)
                 if task.test_type.lower() == 'download':
@@ -303,10 +305,15 @@ class ScheduleManager:
                 elif task.test_type.lower() =='upload':
                     self.__uploadtask_schedule(task)
                 #endIfElse
-            else:
-                log_writer.log(f"Task Ref was not found...",logging.INFO)
+                _task_found = True
             #endIf
+            
+            if _task_found:
+                break
         #endFor
+
+        if not _task_found:
+            log_writer.log(f"Task Ref was not found...",logging.INFO)
 
         self.resume_schedule()
 
