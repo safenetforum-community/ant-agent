@@ -1,6 +1,7 @@
 # Project Specific
 cache/
 tests/
+docker/grafana/
 
 #docker env
 env.*

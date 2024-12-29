@@ -64,11 +64,17 @@ class AgentDownloader:
     def __is_cache_valid(self): 
         if os.path.exists(cls_agent.Configuration.CACHE_FILE) and os.path.exists(cls_agent.Configuration.CACHE_INFO_FILE): 
             with open(cls_agent.Configuration.CACHE_INFO_FILE, 'r') as info_file: 
-                cache_info = json.load(info_file) 
-                if time.time() - cache_info['download_time'] < cls_agent.Configuration.CACHE_TIME: 
-                    return True
-                #endIf 
-                return False 
+                try:
+                    cache_info = json.load(info_file) 
+                    if time.time() - cache_info['download_time'] < cls_agent.Configuration.CACHE_TIME: 
+                        return True
+                    #endIf 
+                    return False 
+                except Exception as e:
+                    log_writer.log(f"AgentDownloader.__is_cache_valid: Exception thrown {e}",logging.DEBUG)
+                    #todo: If we are here, it's a possible deadlock condition, so wait and return
+                    time.sleep(10) # add 10 second pause
+                    return False # return the cache is corrupt
             #endWith
         #endIf
 
