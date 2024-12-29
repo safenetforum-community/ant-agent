@@ -6,7 +6,7 @@ The TODO.md will be kept upto date(tm) with areas that need attention.
 
 ## Grafana Dashboard
 
-The agent self hosts it's own data, and a bundled grafan dashboard can be used to visulize this.
+The agent self hosts it's own data, and a bundled grafana dashboard can be used to visulize this.
 
 ![screenshot](img/ant-agent-overview.png)
 
