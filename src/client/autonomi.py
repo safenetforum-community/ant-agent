@@ -18,9 +18,13 @@ permissions and limitations relating to use of the Code/Software.
 import subprocess
 import shutil
 import os
+import threading
 import tempfile
 import inspect
 import logging
+import string
+import random
+import time
 import hashlib
 from log import LogWriter
 from application import Agent
@@ -31,13 +35,62 @@ cls_agent = Agent()
 log_writer = LogWriter()
 
 class ant_client:
+   process : subprocess.Popen = None
+
    def ___init___(self):
       # BOILER: todo
       pass
 
    def __del__(self):
       #todo: wrong place
-      log_writer.log(f"Ant_Client:Wrapper: Finished",logging.DEBUG)        
+      log_writer.log(f"Ant_Client:Wrapper: Finished",logging.DEBUG)
+
+   def _generate_random_alphanumeric(self): 
+      #todo
+      # Define the set of possible characters: digits and letters (both uppercase and lowercase) 
+      characters = string.ascii_letters + string.digits 
+      
+      # Use random.choices to select 3 random characters from the set 
+      random_string = ''.join(random.choices(characters, k=3)) 
+      
+      return random_string    
+
+   def __start_watchdog(self):
+        try:
+            _self_thread_name = threading.current_thread().name
+
+            if _self_thread_name:
+                self._stop_watchdog = threading.Event()
+                self._watchdog = threading.Thread(target=self.__run_watchdog, name=f"{_self_thread_name}.{self._generate_random_alphanumeric()}_watchdog")
+                self._watchdog.start()
+            #endIf
+        except Exception as e:
+            #to-do: throwing exception, but this needs better handling of why on __init__
+            cls_agent.Exception.throw(error=(f"ant_client.__start_watchdog: {e}"))
+        #endTry
+
+   def __run_watchdog(self):
+        log_writer.log(f"ant_client.__run_watchdog: Watchdog thread started",logging.DEBUG)
+        
+        while not self._stop_watchdog.is_set():
+            if cls_agent.is_Agent_Shutdown() or cls_agent.is_Threads_Terminate_Requested():
+                self._stop_watchdog.set()
+            time.sleep(1)
+        #endWhile
+
+        log_writer.log(f"ant_client.__run_watchdog: Watchdog thread exited, killing class",logging.DEBUG)
+
+        self.terminate()
+
+   def terminate(self):
+         log_writer.log(f"ant_client.Terminate: Deleting Self", logging.DEBUG)
+        
+         if self.process.poll() is None:
+            self.process.kill()
+            time.sleep(20) #provide time for results to be processed
+         #endIf
+
+         del self    
    
    def __get_temp_filepath (self,filename):
       if filename:
@@ -72,6 +125,8 @@ class ant_client:
       return None
 
    def quote(self, filename, timeout=30) -> typedef_Agent_Client_Response:
+
+      self.__start_watchdog()
 
       _return_results : typedef_Agent_Client_Response = typedef_Agent_Client_Response()
       _stderr_break = False
@@ -113,14 +168,16 @@ class ant_client:
          _return_results.client_started = True
          _return_results.client_ok = False
          #WARNING ! shell=False is a safety measure to minimize XSS injections, don't change unless you know what the implications are
-         process = subprocess.Popen(command, shell=False, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
+         self.process = subprocess.Popen(command, shell=False, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
          
          #wait         
-         process.wait() 
+         self.process.wait() 
          
          #todo: needs pushing on a queue to handle threads
                           
-         stdout, stderr = process.communicate()
+         stdout, stderr = self.process.communicate()
+
+         #todo : capture kill sig
                
          #pass stderr
          for _error, _tag in autonomi_messages._error_messages.items(): 
@@ -171,6 +228,7 @@ class ant_client:
          cls_agent.Exception.throw(error=(f"{self.__class__.__name__}/{inspect.currentframe().f_code.co_name}: File Not Found"))
          _stderr_break = True
          _return_results.client_error = True
+         self._stop_watchdog.set()
          return "Error: not_found" # don't change the wording as we look for a match in other modules
       finally:
          if not _stderr_break:
@@ -179,11 +237,14 @@ class ant_client:
       #endTry
 
        #todo : need to strip and return cost
+      self._stop_watchdog.set()
 
       return _return_results
 
    def download(self, file_address : typedef_Agent_Client_File, timeout : int) -> typedef_Agent_Client_Response:
-       
+      
+      self.__start_watchdog()
+
       _return_results : typedef_Agent_Client_Response = typedef_Agent_Client_Response()
       _stderr_break = False
 
@@ -227,15 +288,17 @@ class ant_client:
          _return_results.client_started = True
          _return_results.client_ok = False
          #WARNING ! shell=False is a safety measure to minimize XSS injections, don't change unless you know what the implications are
-         process = subprocess.Popen(command, shell=False, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
+         self.process = subprocess.Popen(command, shell=False, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
          
          #wait         
-         process.wait() 
+         self.process.wait() 
          
          #todo: needs pushing on a queue to handle threads
                           
-         stdout, stderr = process.communicate()
-               
+         stdout, stderr = self.process.communicate()
+
+         #todo : capture kill sig
+         
          #pass stderr
          for _error, _tag in autonomi_messages._error_messages.items(): 
             if _error.lower() in stderr.lower(): 
@@ -267,6 +330,7 @@ class ant_client:
          cls_agent.Exception.throw(error=(f"{self.__class__.__name__}/{inspect.currentframe().f_code.co_name}: File Not Found"))
          _stderr_break = True
          _return_results.client_error = True
+         self._stop_watchdog.set()
          return "Error: not_found" # don't change the wording as we look for a match in other modules
       finally:
          if not _stderr_break:
@@ -291,6 +355,8 @@ class ant_client:
          #todo : need to know why this is throwing an error, as it has it's own try catch in def :/
          pass
 
+      self._stop_watchdog.set()
+
       return _return_results
 
 ##to-do : new hashed this is low   
@@ -311,6 +377,7 @@ class ant_client:
    
    def upload(self, filename, timeout=30):
       # BOILER: todo
+      self.__start_watchdog()
       pass
 
    def version(self):

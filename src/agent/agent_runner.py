@@ -73,13 +73,12 @@ class AgentRunner:
         while not self._stop_watchdog.is_set():
             if cls_agent.is_Agent_Shutdown() or cls_agent.is_Threads_Terminate_Requested():
                 self._stop_watchdog.set()
-                self.terminate()
             time.sleep(1)
         #endWhile
 
         log_writer.log(f"AgentRunner.__run_watchdog: Watchdog thread exited, killing class",logging.DEBUG)
 
-        self.terminate
+        self.terminate()
 
     def exec_upload_task(self, task : typedef_Agent_Task):
         pass
