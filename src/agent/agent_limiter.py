@@ -25,7 +25,9 @@ from application import Agent
 class Limiter:
     #Ensure this is a single instance class
     _instance = None
-    _last_exception_time = None
+    _download_last_exception_time = None
+    _quote_last_exception_time = None
+    _upload_last_exception_time = None
 
     #handle to log processing
     log_writer = LogWriter()
@@ -50,11 +52,38 @@ class Limiter:
                 return func(*args, **kwargs) 
             except RateLimitException: 
                 current_time = datetime.now() 
-                if current_time - self._last_exception_time >= self.CONST_FIVE_MINUTES: 
-                    self._last_exception_time = current_time 
+                if current_time - self._download_last_exception_time >= self.CONST_FIVE_MINUTES: 
+                    self._download_last_exception_time = current_time 
                     self.log_writer.log(f"!!! Download: Agent Rate limit applied | too many download requests, suppressing logging for 5 minutes", logging.INFO) 
                 return False, None 
         return wrapper
+
+    #to-do - BROKEN, need to sort out the scope and debug
+    def upload_rate_limit(self,func): 
+        def wrapper(*args, **kwargs): 
+            try: 
+                return func(*args, **kwargs) 
+            except RateLimitException: 
+                current_time = datetime.now() 
+                if current_time - self._upload_last_exception_time >= self.CONST_FIVE_MINUTES: 
+                    self._upload_last_exception_time = current_time 
+                    self.log_writer.log(f"!!! Upload: Agent Rate limit applied | too many upload requests, suppressing logging for 5 minutes", logging.INFO) 
+                return False, None 
+        return wrapper
+    
+         #to-do - BROKEN, need to sort out the scope and debug
+    def quote_rate_limit(self,func): 
+        def wrapper(*args, **kwargs): 
+            try: 
+                return func(*args, **kwargs) 
+            except RateLimitException: 
+                current_time = datetime.now() 
+                if current_time - self._quote_last_exception_time >= self.CONST_FIVE_MINUTES: 
+                    self._quote_last_exception_time = current_time 
+                    self.log_writer.log(f"!!! Quote: Agent Rate limit applied | too many quote requests, suppressing logging for 5 minutes", logging.INFO) 
+                return False, None 
+        return wrapper
+    
 
     def __new__(cls, *args, **kwargs): 
         if not cls._instance: cls._instance = super(Limiter, cls).__new__(cls, *args, **kwargs) 
@@ -66,15 +95,27 @@ class Limiter:
             self.initialized = True
             
             # Timestamp to track the last time the rate limit exception was handled 
-            self._last_exception_time = datetime.min
+            self._download_last_exception_time = datetime.min
+            self._quote_last_exception_time = datetime.min
+            self._upload_last_exception_time = datetime.min
 
             #todo: Apply the decorator dynamically - this needs re-work
             self.__download_limiter = self.download_rate_limit( self.__download_limiter)
+            self.__quote_limiter = self.quote_rate_limit( self.__quote_limiter)
+            self.__upload_limiter = self.upload_rate_limit( self.__upload_limiter)
 
     @limits(calls=LIMITER_DOWNLOAD_RATE_COUNT, period=LIMITER_DOWNLOAD_RATE_SECONDS) # Adjusted to 2 requests per hour 
     def __download_limiter(self): 
         return True , None
 
+    @limits(calls=LIMITER_QUOTE_RATE_COUNT, period=LIMITER_QUOTE_RATE_SECONDS) # Adjusted to 2 requests per hour 
+    def __quote_limiter(self): 
+        return True , None
+    
+    @limits(calls=LIMITER_UPLOAD_RATE_COUNT, period=LIMITER_UPLOAD_RATE_SECONDS) # Adjusted to 2 requests per hour 
+    def __upload_limiter(self): 
+        return True , None
+    
     def is_ratelimit_download(self) -> bool: 
         try: 
             result,_ = self.__download_limiter() 
@@ -83,10 +124,18 @@ class Limiter:
             return True # Return True when limit is reached
 
     def is_ratelimit_upload(self) -> bool:
-        return False
+        try: 
+            result,_ = self.__upload_limiter() 
+            return not result
+        except RateLimitException: 
+            return True # Return True when limit is reached
 
     def is_ratelimit_quote(self) -> bool:
-        return False
+        try: 
+            result,_ = self.__quote_limiter() 
+            return not result
+        except RateLimitException: 
+            return True # Return True when limit is reached
     
     def show_limits(self):
         #to:do
