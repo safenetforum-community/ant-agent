@@ -56,7 +56,7 @@
     <TimeOffset>0</TimeOffset>
     <TestType>Download</TestType>
     <TestOptions>
-      <Option key="filesize" value="medium"/>
+      <Option key="filesize" value="small"/>
       <Option key="workers" value="4"/>
       <Option key="offset" value="1"/> 
       <Option key="repeat" value="false"/>
@@ -72,7 +72,7 @@
     <TimeOffset>0</TimeOffset>
     <TestType>Download</TestType>
     <TestOptions>
-      <Option key="filesize" value="medium"/>
+      <Option key="filesize" value="small"/>
       <Option key="workers" value="2"/>
       <Option key="offset" value="1"/> 
       <Option key="repeat" value="false"/>
