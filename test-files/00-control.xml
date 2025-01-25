@@ -1,126 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Schedule>
-  <!-- 001 Download -->
   <Task> 
-    <TaskRef>001</TaskRef>
-    <Description>Download a medium file from network</Description>
-    <TimePeriod>5</TimePeriod>
-    <TimeOffset>0</TimeOffset>
-    <TestType>Download</TestType>
-    <TestOptions>
-      <Option key="filesize" value="medium"/>
-      <Option key="workers" value="2"/>
-      <Option key="offset" value="1"/> 
-      <Option key="repeat" value="false"/>
-      <Option key="timeout" value="60"/> 
-      <Option key="retry" value="3"/> 
-    </TestOptions> 
-  </Task>
-  <!-- 002 Download -->
-  <Task> 
-    <TaskRef>002</TaskRef>
-    <Description>Download a medium file from network</Description>
-    <TimePeriod>15</TimePeriod>
-    <TimeOffset>0</TimeOffset>
-    <TestType>Download</TestType>
-    <TestOptions>
-      <Option key="filesize" value="medium"/>
-      <Option key="workers" value="4"/>
-      <Option key="offset" value="1"/> 
-      <Option key="repeat" value="false"/>
-      <Option key="timeout" value="60"/> 
-      <Option key="retry" value="3"/> 
-    </TestOptions> 
-  </Task>
-  <!-- 003 Download -->
-  <Task> 
-    <TaskRef>003</TaskRef>
-    <Description>Download a medium file from network</Description>
-    <TimePeriod>25</TimePeriod>
-    <TimeOffset>0</TimeOffset>
-    <TestType>Download</TestType>
-    <TestOptions>
-      <Option key="filesize" value="medium"/>
-      <Option key="workers" value="6"/>
-      <Option key="offset" value="1"/> 
-      <Option key="repeat" value="false"/>
-      <Option key="timeout" value="60"/> 
-      <Option key="retry" value="3"/> 
-    </TestOptions> 
-  </Task>
-  <!-- 004 Download -->
-  <Task> 
-    <TaskRef>004</TaskRef>
-    <Description>Download a medium file from network</Description>
-    <TimePeriod>35</TimePeriod>
-    <TimeOffset>0</TimeOffset>
-    <TestType>Download</TestType>
-    <TestOptions>
-      <Option key="filesize" value="small"/>
-      <Option key="workers" value="4"/>
-      <Option key="offset" value="1"/> 
-      <Option key="repeat" value="false"/>
-      <Option key="timeout" value="60"/> 
-      <Option key="retry" value="3"/> 
-    </TestOptions> 
-  </Task>
-  <!-- 005 Download -->
-  <Task> 
-    <TaskRef>005</TaskRef>
-    <Description>Download a medium file from network</Description>
-    <TimePeriod>45</TimePeriod>
-    <TimeOffset>0</TimeOffset>
-    <TestType>Download</TestType>
-    <TestOptions>
-      <Option key="filesize" value="small"/>
-      <Option key="workers" value="2"/>
-      <Option key="offset" value="1"/> 
-      <Option key="repeat" value="false"/>
-      <Option key="timeout" value="60"/> 
-      <Option key="retry" value="3"/> 
-    </TestOptions> 
-  </Task>
-  <!-- 010 Quote -->
-  <Task> 
-    <TaskRef>010</TaskRef>
-    <Description>Quote for upload</Description>
-    <TimePeriod>10</TimePeriod>
-    <TimeOffset>0</TimeOffset>
-    <TestType>quote</TestType>
-    <TestOptions>
-      <Option key="filesize" value="medium"/>
-      <Option key="workers" value="1"/>
-      <Option key="offset" value="false"/> 
-      <Option key="repeat" value="false"/>
-      <Option key="timeout" value="60"/> 
-      <Option key="retry" value="3"/> 
-    </TestOptions> 
-  </Task>
-  <!-- 011 Quote -->
-  <Task> 
-    <TaskRef>011</TaskRef>
-    <Description>Quote for upload</Description>
-    <TimePeriod>20</TimePeriod>
-    <TimeOffset>0</TimeOffset>
-    <TestType>quote</TestType>
-    <TestOptions>
-      <Option key="filesize" value="large"/>
-      <Option key="workers" value="1"/>
-      <Option key="offset" value="false"/> 
-      <Option key="repeat" value="false"/>
-      <Option key="timeout" value="60"/> 
-      <Option key="retry" value="3"/> 
-    </TestOptions> 
-  </Task>
-  <!-- 012 Quote -->
-  <Task> 
-    <TaskRef>012</TaskRef>
+    <TaskRef>099</TaskRef>
     <Description>Quote for upload</Description>
     <TimePeriod>30</TimePeriod>
     <TimeOffset>0</TimeOffset>
     <TestType>quote</TestType>
     <TestOptions>
-      <Option key="filesize" value="huge"/>
+      <Option key="filesize" value="medium"/>
       <Option key="workers" value="1"/>
       <Option key="offset" value="false"/> 
       <Option key="repeat" value="false"/>
